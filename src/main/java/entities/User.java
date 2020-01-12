@@ -13,7 +13,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import org.mindrot.jbcrypt.BCrypt;
 
 @Entity
 @Table(name = "users")
@@ -34,13 +33,13 @@ public class User implements Serializable {
     @JoinColumn(name = "user_name", referencedColumnName = "user_name")}, inverseJoinColumns = {
     @JoinColumn(name = "role_name", referencedColumnName = "role_name")})
   @ManyToMany
-  private List<Role> roleList = new ArrayList();
+  private List<Role> roleList = new ArrayList<>();
 
   public List<String> getRolesAsStrings() {
     if (roleList.isEmpty()) {
       return null;
     }
-    List<String> rolesAsStrings = new ArrayList();
+    List<String> rolesAsStrings = new ArrayList<>();
     for (Role role : roleList) {
       rolesAsStrings.add(role.getRoleName());
     }
