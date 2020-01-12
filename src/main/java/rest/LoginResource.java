@@ -3,13 +3,16 @@ package rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dto.RecipeDTO;
+import entities.Recipe;
 import entities.User;
 import facades.MadPlanFacade;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.TypedQuery;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
@@ -79,9 +82,18 @@ public class LoginResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("recipes")
     public String allRecipes() throws ParseException{
-        List<RecipeDTO> personResults = FACADE.getAllRecipes();
-        String json = GSON.toJson(personResults);
-        return json;
+        EntityManager em = EMF.createEntityManager();
+        List<RecipeDTO> personDTOs = new ArrayList<RecipeDTO>();
+        try{
+            List<Recipe> recipes = em.createQuery("SELECT p FROM Recipes p").getResultList();
+            for (int i = 0; i < recipes.size(); i++) {
+                personDTOs.add(new RecipeDTO(recipes.get(i)));  
+            }
+            String json = GSON.toJson(personDTOs);
+            return json;
+        }finally{
+            em.close();
+        }
     }
     
     
