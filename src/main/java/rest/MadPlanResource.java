@@ -4,12 +4,15 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import dto.RecipeDTO;
 import utils.EMF_Creator;
 import facades.MadPlanFacade;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.ParseException;
+import java.util.List;
 import java.util.Scanner;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.GET;
@@ -18,16 +21,10 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-//Todo Remove or change relevant parts before ACTUAL use
 @Path("madplan")
 public class MadPlanResource {
 
-    private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory(
-                "pu",
-                "jdbc:mysql://157.230.102.50:3306/exam",
-                "teddy",
-                "test",
-                EMF_Creator.Strategy.CREATE);
+    private static EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.CREATE);
     
 
     private static final MadPlanFacade FACADE =  MadPlanFacade.getFacadeExample(EMF);
@@ -52,6 +49,15 @@ public class MadPlanResource {
         JsonElement jsonElement = jsonParser.parse(jsonStr);
         String prettyJson = GSON.toJson(jsonElement);
         return prettyJson;
+    }
+    
+    @Path("all")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String allRecipes() throws ParseException{
+        List<RecipeDTO> personResults = FACADE.getAllRecipes();
+        String json = GSON.toJson(personResults);
+        return json;
     }
     
 }

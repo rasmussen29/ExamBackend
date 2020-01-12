@@ -6,21 +6,11 @@
 package entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -47,21 +37,14 @@ public class Recipe implements Serializable {
         
     @Column(name = "prep_time")
     private String prep_time;
-    
-    @OneToMany(mappedBy="recipe") 
-    private List<Instruction> preperaion_steps;
-    
-    @OneToMany(mappedBy="recipe") 
-    private List<Ingredient> ingredients;
-  
+   
     public Recipe() {}
     
-    public Recipe(String id, String description, String prep_time, List<Instruction> preperaion_steps, List<Ingredient> ingredients){
+    public Recipe(String id, String description, String prep_time){
         this.id = id;
         this.description = description;
         this.prep_time = prep_time;
-        this.preperaion_steps = preperaion_steps;
-        this.ingredients = ingredients;
+
     }
 
     public Long getU_id() {
@@ -96,23 +79,7 @@ public class Recipe implements Serializable {
         this.prep_time = prep_time;
     }
 
-    public List<Instruction> getPreperaion_steps() {
-        return preperaion_steps;
-    }
-
-    public void setPreperaion_steps(List<Instruction> preperaion_steps) {
-        this.preperaion_steps = preperaion_steps;
-    }
-
-    public List<Ingredient> getIngredients() {
-        return ingredients;
-    }
-
-    public void setIngredients(List<Ingredient> ingredients) {
-        this.ingredients = ingredients;
-    }
-    
-    
+  
 }
 
 

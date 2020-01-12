@@ -21,10 +21,23 @@ import javax.persistence.EntityManagerFactory;
  */
 public class Startup {
     public static void main(String[] args) throws IOException{
+        AddToDatabase("slow%20cooker%20beef%20stew");
+        AddToDatabase("Smoked%20paprika%20goulash%20for%20the%20slow%20cooker");
+        AddToDatabase("Pistachio%20chicken%20with%20pomegranate%20sauce");
+        AddToDatabase("Cheesy%20leek%20and%20mustard%20soup");
+        AddToDatabase("Christmas%20Stollen");
+        AddToDatabase("Polly's%20eccles%20cakes");
+        AddToDatabase("Braised%20beef%20in%20red%20wine");
+        AddToDatabase("Moist%20garlic%20roasted%20chicken");
+        AddToDatabase("Cheese%20and%20bacon%20stuffed%20pasta%20shells");
+        AddToDatabase("Tofu%20vindaloo");
+
+    }
+    
+    public static void AddToDatabase (String id) throws IOException{
         EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.DROP_AND_CREATE);
         EntityManager em = emf.createEntityManager();
-   
-        URL url = new URL("http://46.101.217.16:4000/recipe/Cheese%20and%20bacon%20stuffed%20pasta%20shells");
+        URL url = new URL("http://46.101.217.16:4000/recipe/" + id);
         InputStreamReader reader = new InputStreamReader(url.openStream());
         RecipeDTO dto = new Gson().fromJson(reader, RecipeDTO.class);
 
@@ -32,15 +45,11 @@ public class Startup {
         System.out.println(dto.getId());
         System.out.println(dto.getDescription());
         System.out.println(dto.getPrep_time());
-        System.out.println(dto.getPreperaion_steps());
-        System.out.println(dto.getIngredients());
         
-        Recipe newRecipe = new Recipe(dto.getId(), dto.getDescription(), dto.getPrep_time(),dto.getPreperaion_steps(),dto.getIngredients());
+        Recipe newRecipe = new Recipe(dto.getId(), dto.getDescription(), dto.getPrep_time());
         em.getTransaction().begin();
         em.persist(newRecipe);
         em.getTransaction().commit();
-        
-        
     }
 
 }
