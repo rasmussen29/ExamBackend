@@ -17,7 +17,7 @@ public class RecipeDTO {
 
     public RecipeDTO(){}
     
-    public RecipeDTO(Recipe recipe) throws ParseException{
+    public RecipeDTO(Recipe recipe) {
         this.id = recipe.getId();
         this.description = recipe.getDescription();
         this.prep_time = recipe.getPrep_time();

@@ -6,13 +6,11 @@ import dto.RecipeDTO;
 import entities.Recipe;
 import entities.User;
 import facades.MadPlanFacade;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.TypedQuery;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
@@ -81,7 +79,7 @@ public class LoginResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("recipes")
-    public String allRecipes() throws ParseException{
+    public String allRecipes() {
         EntityManager em = EMF.createEntityManager();
         List<RecipeDTO> personDTOs = new ArrayList<RecipeDTO>();
         try{
