@@ -34,7 +34,7 @@ public abstract class MadPlanFacade implements Callable{
      * @param _emf
      * @return an instance of this facade class.
      */
-    public static MadPlanFacade getFacadeExample(EntityManagerFactory _emf) {
+    public static MadPlanFacade getMadPlanFacade(EntityManagerFactory _emf) {
         if (instance == null) {
             emf = _emf;
             instance = new MadPlanFacade() {
