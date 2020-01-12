@@ -33,9 +33,10 @@ public class MadPlanResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("all")
-    public String allRecipes() {
-       return "{\"msg\":\"Hello anonymous\"}";
+    public String allRecipes() throws ParseException{
+        List<RecipeDTO> personResults = FACADE.getAllRecipes();
+        String json = GSON.toJson(personResults);
+        return json;
     }
-    
     
 }

@@ -75,24 +75,4 @@ public class LoginResource {
         String thisuser = securityContext.getUserPrincipal().getName();
         return "{\"msg\": \"Velkommen (admin): " + thisuser + "\"}";
     }
-    
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("recipes")
-    public String allRecipes() {
-        EntityManager em = EMF.createEntityManager();
-        List<RecipeDTO> personDTOs = new ArrayList<RecipeDTO>();
-        try{
-            List<Recipe> recipes = em.createQuery("SELECT p FROM Recipes p").getResultList();
-            for (int i = 0; i < recipes.size(); i++) {
-                personDTOs.add(new RecipeDTO(recipes.get(i)));  
-            }
-            String json = GSON.toJson(personDTOs);
-            return json;
-        }finally{
-            em.close();
-        }
-    }
-    
-    
 }
