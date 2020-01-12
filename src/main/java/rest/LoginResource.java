@@ -1,7 +1,11 @@
 package rest;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import dto.RecipeDTO;
 import entities.User;
+import facades.MadPlanFacade;
+import java.text.ParseException;
 import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManager;
@@ -22,6 +26,8 @@ import utils.EMF_Creator;
 public class LoginResource {
 
     private static EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.CREATE);
+    private static final MadPlanFacade FACADE =  MadPlanFacade.getMadPlanFacade(EMF);
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     @Context
     private UriInfo context;
@@ -67,6 +73,15 @@ public class LoginResource {
     public String getFromAdmin() {
         String thisuser = securityContext.getUserPrincipal().getName();
         return "{\"msg\": \"Velkommen (admin): " + thisuser + "\"}";
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("recipes")
+    public String allRecipes() throws ParseException{
+        List<RecipeDTO> personResults = FACADE.getAllRecipes();
+        String json = GSON.toJson(personResults);
+        return json;
     }
     
     
