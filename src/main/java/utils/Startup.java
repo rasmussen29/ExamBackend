@@ -8,6 +8,7 @@ package utils;
 import com.google.gson.Gson;
 import dto.RecipeDTO;
 import entities.Recipe;
+import entities.Role;
 import entities.User;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -50,6 +51,37 @@ public class Startup {
         em.getTransaction().begin();
         em.persist(newRecipe);
         em.getTransaction().commit();
+        
+        AddUsers();
+    }
+    
+    public static void AddUsers() {
+        EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.DROP_AND_CREATE);
+        EntityManager em = emf.createEntityManager();
+        User user = new User("user", "test");
+        User admin = new User("admin", "test");
+        User both = new User("user_admin", "test");
+
+        //if(admin.getUserPass().equals("test")||user.getUserPass().equals("test")||both.getUserPass().equals("test"))
+        //  throw new UnsupportedOperationException("You have not changed the passwords");
+
+        em.getTransaction().begin();
+        Role userRole = new Role("user");
+        Role adminRole = new Role("admin");
+        user.addRole(userRole);
+        admin.addRole(adminRole);
+        both.addRole(userRole);
+        both.addRole(adminRole);
+        em.persist(userRole);
+        em.persist(adminRole);
+        em.persist(user);
+        em.persist(admin);
+        em.persist(both);
+        em.getTransaction().commit();
+        System.out.println("PW: " + user.getUserPass());
+        System.out.println("Testing user with OK password: " + user.verifyPassword("test"));
+        System.out.println("Testing user with wrong password: " + user.verifyPassword("test1"));
+        System.out.println("Created TEST Users");
     }
 
 }

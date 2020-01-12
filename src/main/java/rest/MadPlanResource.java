@@ -31,9 +31,10 @@ public class MadPlanResource {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final JsonParser jsonParser = new JsonParser();        
    
-    @Path("search/{id}")
+    
     @GET
     @Produces({MediaType.APPLICATION_JSON})
+    @Path("search/{id}")
     public String getRecipeById(@PathParam("id") String id) throws MalformedURLException, IOException{  
         URL url = new URL("http://46.101.217.16:4000/recipe/"+id);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -51,9 +52,10 @@ public class MadPlanResource {
         return prettyJson;
     }
     
-    @Path("all")
+    
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Path("all")
     public String allRecipes() throws ParseException{
         List<RecipeDTO> personResults = FACADE.getAllRecipes();
         String json = GSON.toJson(personResults);
