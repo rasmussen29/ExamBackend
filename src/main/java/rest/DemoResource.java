@@ -58,6 +58,7 @@ public class DemoResource {
         String thisuser = securityContext.getUserPrincipal().getName();
         return "{\"msg\": \"Velkommen: " + thisuser + "\"}";
     }
+    
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -67,4 +68,6 @@ public class DemoResource {
         String thisuser = securityContext.getUserPrincipal().getName();
         return "{\"msg\": \"Velkommen (admin): " + thisuser + "\"}";
     }
+    
+    
 }
