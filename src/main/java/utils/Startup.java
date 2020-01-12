@@ -36,7 +36,7 @@ public class Startup {
     }
     
     public static void AddToDatabase (String id) throws IOException{
-        EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.DROP_AND_CREATE);
+        EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.CREATE);
         EntityManager em = emf.createEntityManager();
         URL url = new URL("http://46.101.217.16:4000/recipe/" + id);
         InputStreamReader reader = new InputStreamReader(url.openStream());
