@@ -24,7 +24,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
 
-@Path("madplan")
+@Path("/madplan")
 public class MadPlanResource {
     
     private static EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.CREATE);
@@ -39,7 +39,7 @@ public class MadPlanResource {
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("all")
+    @Path("/all")
     public String allRecipes() throws ParseException{
         List<RecipeDTO> personResults = FACADE.getAllRecipes();
         String json = GSON.toJson(personResults);
