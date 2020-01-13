@@ -6,11 +6,19 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -18,13 +26,12 @@ import javax.validation.constraints.NotNull;
  *
  * @author Marcus
  */
-@Entity(name = "Recipes")
-
-@Table(name = "Recipes")
+@Entity(name = "Recipe")
+@Table(name = "recipe")
 public class Recipe implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @NotNull
     @Column(name = "u_id")
     private Long u_id;
@@ -37,13 +44,17 @@ public class Recipe implements Serializable {
         
     @Column(name = "prep_time")
     private String prep_time;
-   
+  
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    private List<Ingredient> ingredients = new ArrayList<>();
+    
     public Recipe() {}
     
-    public Recipe(String id, String description, String prep_time){
+    public Recipe(String id, String description, String prep_time, List<Ingredient> ingredients){
         this.id = id;
         this.description = description;
         this.prep_time = prep_time;
+        this.ingredients = ingredients;
 
     }
 
@@ -79,7 +90,13 @@ public class Recipe implements Serializable {
         this.prep_time = prep_time;
     }
 
-  
+    public List<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(List<Ingredient> ingredients) {
+        this.ingredients = ingredients;
+    }
 }
 
 

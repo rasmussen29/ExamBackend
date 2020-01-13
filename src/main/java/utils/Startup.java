@@ -6,15 +6,23 @@
 package utils;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 import dto.RecipeDTO;
+import entities.Ingredient;
 import entities.Recipe;
 import entities.Role;
 import entities.User;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+
+
 
 /**
  *
@@ -22,32 +30,37 @@ import javax.persistence.EntityManagerFactory;
  */
 public class Startup {
     public static void main(String[] args) throws IOException{
-        AddToDatabase("slow%20cooker%20beef%20stew");
-        AddToDatabase("Smoked%20paprika%20goulash%20for%20the%20slow%20cooker");
-        AddToDatabase("Pistachio%20chicken%20with%20pomegranate%20sauce");
-        AddToDatabase("Cheesy%20leek%20and%20mustard%20soup");
-        AddToDatabase("Christmas%20Stollen");
-        AddToDatabase("Polly's%20eccles%20cakes");
-        AddToDatabase("Braised%20beef%20in%20red%20wine");
-        AddToDatabase("Moist%20garlic%20roasted%20chicken");
-        AddToDatabase("Cheese%20and%20bacon%20stuffed%20pasta%20shells");
-        AddToDatabase("Tofu%20vindaloo");
+        AddUsers();
+        //AddToDatabase("slow%20cooker%20beef%20stew");
+        //AddToDatabase("Smoked%20paprika%20goulash%20for%20the%20slow%20cooker");
+        //AddToDatabase("Pistachio%20chicken%20with%20pomegranate%20sauce");
+        //AddToDatabase("Cheesy%20leek%20and%20mustard%20soup");
+        //AddToDatabase("Christmas%20Stollen");
+        //AddToDatabase("Polly's%20eccles%20cakes");
+        //AddToDatabase("Braised%20beef%20in%20red%20wine");
+        //AddToDatabase("Moist%20garlic%20roasted%20chicken");
+        //AddToDatabase("Cheese%20and%20bacon%20stuffed%20pasta%20shells");
+        //AddToDatabase("Tofu%20vindaloo");
 
     }
     
     public static void AddToDatabase (String id) throws IOException{
-        EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.CREATE);
+        EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.DROP_AND_CREATE);
         EntityManager em = emf.createEntityManager();
         URL url = new URL("http://46.101.217.16:4000/recipe/" + id);
         InputStreamReader reader = new InputStreamReader(url.openStream());
-        RecipeDTO dto = new Gson().fromJson(reader, RecipeDTO.class);
-
-        // using the deserialized object
+        
+        Recipe dto = new Gson().fromJson(reader, Recipe.class);
+        
+        
+        //System.out.println(dto);
+        
         System.out.println(dto.getId());
         System.out.println(dto.getDescription());
         System.out.println(dto.getPrep_time());
+        System.out.println(dto.getIngredients());
         
-        Recipe newRecipe = new Recipe(dto.getId(), dto.getDescription(), dto.getPrep_time());
+        Recipe newRecipe = new Recipe(dto.getId(), dto.getDescription(), dto.getPrep_time(), dto.getIngredients());
         em.getTransaction().begin();
         em.persist(newRecipe);
         em.getTransaction().commit();
@@ -56,7 +69,7 @@ public class Startup {
     }
     
     public static void AddUsers() {
-        EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.DROP_AND_CREATE);
+        EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.CREATE);
         EntityManager em = emf.createEntityManager();
         User user = new User("user", "test");
         User admin = new User("admin", "test");

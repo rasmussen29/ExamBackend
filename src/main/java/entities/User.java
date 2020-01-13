@@ -13,6 +13,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import org.mindrot.jbcrypt.BCrypt;
 
 @Entity
 @Table(name = "users")
@@ -50,13 +51,13 @@ public class User implements Serializable {
 
   //TODO Change when password is hashed
    public boolean verifyPassword(String pw){
-        return(pw.equals(userPass));
+        return BCrypt.checkpw(pw, userPass);
     }
 
   public User(String userName, String userPass) {
     this.userName = userName;
-
-    this.userPass = userPass;
+    //this.userPass = userPass;
+    this.userPass = BCrypt.hashpw(userPass, BCrypt.gensalt(12));
   }
 
 
@@ -73,7 +74,8 @@ public class User implements Serializable {
   }
 
   public void setUserPass(String userPass) {
-    this.userPass = userPass;
+    //this.userPass = userPass;
+    this.userPass = BCrypt.hashpw(userPass, BCrypt.gensalt(12));
   }
 
   public List<Role> getRoleList() {
